@@ -185,4 +185,8 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+
+    // Front END APP
+    'front_end_url' => env('FRONT_END_URL')
+
 ];

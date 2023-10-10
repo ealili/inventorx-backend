@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\PasswordController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,3 +28,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login',]);
+
+/*
+ * Password routes
+ */
+Route::middleware('guest')->namespace('Users')->prefix('/password')->group(function () {
+    Route::post('/forgot', [PasswordController::class, 'sendPasswordResetLink'])->name('password.email');
+    Route::post('reset', [PasswordController::class, 'resetPassword'])->name('password.update');
+});
