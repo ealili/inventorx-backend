@@ -7,17 +7,22 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Repositories\IUserRepository;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
+    public function __construct(
+        private IUserRepository $userRepository)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return UserResource::collection(
-            User::query()->orderBy('id', 'desc')->paginate()
-        );
+        return $this->userRepository->getUsersPaginated();
     }
 
     /**
@@ -27,6 +32,11 @@ class UserController extends Controller
     {
         $data = $request->validated();
         $data['password'] = bcrypt($data['password']);
+        $avatarPath = env('APP_URL') . '/storage/avatars/' . 'default-profile-picture.jpeg';
+        $data['avatar'] = $avatarPath;
+
+
+        return $data;
         $user = User::create($data);
 
         return response(new UserResource($user), 201);
@@ -37,7 +47,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return new UserResource($user);
+        return $this->userRepository->getUser($user);
+//        return new UserResource($user);
     }
 
     /**

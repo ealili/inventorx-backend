@@ -14,5 +14,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // This worked for donwloading the file name stored by
+    // $file = Storage::putFile('avatars', $request->avatar);
+    // in the local disk
+
+    $fileName = 'ERlNKDWosnRRwpEQ0akvc6rOnyxbaV4Fmhf7JJWV.jpg';
+    $path = storage_path('app/public/avatars/' . $fileName);
+
+    if (file_exists($path)) {
+        return response()->download($path);
+    } else {
+        return response()->json(['error' => 'File not found.'], 404);
+    }
 });
+
+//Route::get('/', function () {
+//
+//});
