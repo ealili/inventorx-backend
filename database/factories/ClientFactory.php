@@ -19,6 +19,7 @@ class ClientFactory extends Factory
         return [
             'company_name' => fake()->name(),
             'address' => fake()->address(),
+            'website' => fake()->url(),
         ];
     }
 }

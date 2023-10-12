@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('company_name');
             $table->string('address');
+            $table->string('website')->nullable();
             $table->timestamps();
         });
     }

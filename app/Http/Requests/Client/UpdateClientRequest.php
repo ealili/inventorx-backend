@@ -23,7 +23,8 @@ class UpdateClientRequest extends FormRequest
     {
         return [
             'company_name' => 'filled|string',
-            'address' => 'filled|string'
+            'address' => 'filled|string',
+            'website' => 'filled|string'
         ];
     }
 }
