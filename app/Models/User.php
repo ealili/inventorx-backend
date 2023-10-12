@@ -22,7 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'avatar'
+        'avatar',
+        'role_id'
     ];
 
     /**
@@ -50,5 +51,10 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token)
     {
         PasswordResetJob::dispatch($this, $token);
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 }

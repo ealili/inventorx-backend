@@ -29,7 +29,7 @@ class Signuprequest extends FormRequest
                 'required',
                 'confirmed',
                 Password::min(8)->letters()->symbols()
-            ]
+            ],
         ];
     }
 }

@@ -17,12 +17,14 @@ class AuthController extends Controller
 
         $avatarPath = env('APP_URL') . '/storage/avatars/' . 'default-profile-picture.jpeg';
 
+
         /** @var User $user */
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'avatar' => $avatarPath
+            'avatar' => $avatarPath,
+            'role_id' => 3
         ]);
 
         $token = $user->createToken('main')->plainTextToken;
