@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\Client\ClientRepository;
+use App\Repositories\Client\IClientRepository;
 use App\Repositories\Role\IRoleRepository;
 use App\Repositories\Role\RoleRepository;
 use App\Repositories\User\IUserRepository;
@@ -17,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(IUserRepository::class, UserRepository::class);
         $this->app->bind(IRoleRepository::class, RoleRepository::class);
+        $this->app->bind(IClientRepository::class, ClientRepository::class);
 
     }
 
