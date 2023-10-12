@@ -10,4 +10,10 @@ interface IClientRepository
     public function getAll();
 
     public function get(Client $client);
+
+    public function create();
+
+    public function update(Client $client);
+
+    public function delete(Client $client);
 }

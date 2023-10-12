@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Repositories\Client\IClientRepository;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->clientRepository->create();
     }
 
     /**
@@ -36,7 +37,7 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        //
+        return $this->clientRepository->get($client);
     }
 
     /**
@@ -44,7 +45,7 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        //
+        return $this->clientRepository->update($client);
     }
 
     /**
@@ -52,6 +53,6 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+        return $this->clientRepository->delete($client);
     }
 }

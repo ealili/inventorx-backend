@@ -17,6 +17,21 @@ class ClientRepository implements IClientRepository
 
     public function get(Client $client)
     {
-        // TODO: Implement get() method.
+        return new ClientResource($client);
+    }
+
+    public function create()
+    {
+        // TODO: Implement create() method.
+    }
+
+    public function update(Client $client)
+    {
+        // TODO: Implement update() method.
+    }
+
+    public function delete(Client $client)
+    {
+        // TODO: Implement delete() method.
     }
 }
