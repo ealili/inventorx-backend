@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Client\StoreClientRequest;
+use App\Http\Requests\Client\UpdateClientRequest;
 use App\Models\Client;
 use App\Repositories\Client\IClientRepository;
 use Illuminate\Http\Request;
@@ -27,9 +29,9 @@ class ClientController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreClientRequest $request)
     {
-        return $this->clientRepository->create();
+        return $this->clientRepository->create($request->all());
     }
 
     /**
@@ -43,9 +45,9 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Client $client)
+    public function update(UpdateClientRequest $request, Client $client)
     {
-        return $this->clientRepository->update($client);
+        return $this->clientRepository->update($request->all(), $client);
     }
 
     /**
@@ -53,6 +55,9 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        return $this->clientRepository->delete($client);
+        if ($this->clientRepository->delete($client)) {
+            return response([''], 204);
+        }
+        return response(['message' => 'Client could be deleted']);
     }
 }

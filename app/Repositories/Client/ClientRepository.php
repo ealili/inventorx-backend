@@ -20,18 +20,22 @@ class ClientRepository implements IClientRepository
         return new ClientResource($client);
     }
 
-    public function create()
+    public function create(array $data)
     {
-        // TODO: Implement create() method.
+        $client = Client::create($data);
+
+        return new ClientResource($client);
     }
 
-    public function update(Client $client)
+    public function update(array $data, Client $client)
     {
-        // TODO: Implement update() method.
+        $client->update($data);
+
+        return new ClientResource($client);
     }
 
     public function delete(Client $client)
     {
-        // TODO: Implement delete() method.
+        return $client->delete();
     }
 }

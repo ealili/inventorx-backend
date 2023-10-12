@@ -11,9 +11,9 @@ interface IClientRepository
 
     public function get(Client $client);
 
-    public function create();
+    public function create(array $data);
 
-    public function update(Client $client);
+    public function update(array $data, Client $client);
 
     public function delete(Client $client);
 }
