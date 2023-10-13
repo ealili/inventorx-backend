@@ -3,16 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Repositories\Project\IProjectRepository;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
+    public function __construct(
+        private IProjectRepository $projectRepository
+    )
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return $this->projectRepository->getAll();
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\PasswordController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\AvatarController;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,11 +27,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [UserController::class, 'show']);
 
     Route::apiResource('users', UserController::class);
-    Route::apiResource('clients', ClientController::class);
     Route::post('avatar', [AvatarController::class, 'store']);
 
     Route::get('roles', [RoleController::class, 'index']);
     Route::get('roles/{role}', [RoleController::class, 'show']);
+
+    Route::apiResource('clients', ClientController::class);
+    Route::apiResource('projects', ProjectController::class);
 });
 
 
