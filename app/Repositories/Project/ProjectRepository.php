@@ -17,21 +17,25 @@ class ProjectRepository implements IProjectRepository
 
     public function get(Project $project)
     {
-        // TODO: Implement get() method.
+        return new ProjectResource($project);
     }
 
     public function create(array $data)
     {
-        // TODO: Implement create() method.
+        $project = Project::create($data);
+
+        return new ProjectResource($project);
     }
 
     public function update(array $data, Project $project)
     {
-        // TODO: Implement update() method.
+        $project->update($data);
+
+        return new ProjectResource($project);
     }
 
     public function delete(Project $project)
     {
-        // TODO: Implement delete() method.
+        return $project->delete();
     }
 }
