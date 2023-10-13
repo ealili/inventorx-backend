@@ -18,8 +18,8 @@ class ProjectResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'client_id' => $this->client_id,
-            'project_status_id' => $this->project_status_id,
+            'client' => $this->client,
+            'status' => $this->status,
         ];
     }
 }

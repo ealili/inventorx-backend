@@ -20,4 +20,14 @@ class Project extends Model
         'client_id',
         'project_status_id'
     ];
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(ProjectStatus::class, 'project_status_id');
+    }
 }
