@@ -60,4 +60,12 @@ class ClientController extends Controller
         }
         return response(['message' => 'Client could be deleted']);
     }
+
+    /**
+     * Display a listing of projects of the resource.
+     */
+    public function indexProjectsByClientId(Request $request, Client $client)
+    {
+        return $this->clientRepository->getProjectsByClientId($client->id);
+    }
 }

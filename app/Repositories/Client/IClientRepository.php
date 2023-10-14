@@ -9,6 +9,8 @@ interface IClientRepository
 {
     public function getAll();
 
+    public function getProjectsByClientId(int $clientId);
+
     public function get(Client $client);
 
     public function create(array $data);

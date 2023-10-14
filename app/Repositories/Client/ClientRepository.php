@@ -3,7 +3,9 @@
 namespace App\Repositories\Client;
 
 use App\Http\Resources\ClientResource;
+use App\Http\Resources\Project\ProjectResource;
 use App\Models\Client;
+use App\Models\Project;
 
 class ClientRepository implements IClientRepository
 {
@@ -37,5 +39,12 @@ class ClientRepository implements IClientRepository
     public function delete(Client $client)
     {
         return $client->delete();
+    }
+
+    public function getProjectsByClientId(int $clientId)
+    {
+        $projects = Project::where('client_id', $clientId)->get();
+
+        return ProjectResource::collection($projects);
     }
 }
