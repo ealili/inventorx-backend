@@ -20,7 +20,9 @@ class TaskRepository implements ITaskRepository
 
     public function create(array $data)
     {
-        // TODO: Implement create() method.
+        $task = Task::create($data);
+
+        return new TaskResource($task);
     }
 
     public function update(array $data, Task $project)
