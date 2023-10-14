@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Task\AssignEmployeeToTaskRequest;
 use App\Http\Requests\Task\StoreTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
 use App\Models\Task;
@@ -58,5 +59,16 @@ class TaskController extends Controller
             return response([''], 204);
         }
         return response(['message' => 'Task could be deleted']);
+    }
+
+    /**
+     * Assign user/employee the specified task in storage.
+     */
+    public function assignToTask(AssignEmployeeToTaskRequest $request, Task $task)
+    {
+        if ($this->taskRepository->assignToTask($task, $request->assignee_id)) {
+            return response(['message' => 'Employee has been assigned to task.'], 200);
+        }
+        return response(['Could not assign employee to task']);
     }
 }

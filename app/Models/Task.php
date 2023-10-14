@@ -18,11 +18,11 @@ class Task extends Model
         'title',
         'deadline',
         'project_id',
-        'user_id',
+        'assignee_id',
         'task_status_id'
     ];
 
-    public function user()
+    public function assignee()
     {
         return $this->belongsTo(User::class);
     }

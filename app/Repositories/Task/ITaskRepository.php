@@ -15,4 +15,6 @@ interface ITaskRepository
     public function update(array $data, Task $task);
 
     public function delete(Task $task);
+
+    public function assignToTask(Task $task, int $assigneeId);
 }

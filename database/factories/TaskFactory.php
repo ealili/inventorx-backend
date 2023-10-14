@@ -19,7 +19,7 @@ class TaskFactory extends Factory
         return [
             'title' => $this->faker->name(),
             'deadline' => $this->faker->dateTime(),
-            'user_id' => rand(1, 10),
+            'assignee_id' => rand(1, 10),
             'project_id' => rand(1, 10),
             'task_status_id' => rand(1, 4)
         ];

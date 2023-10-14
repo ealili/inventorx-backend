@@ -36,4 +36,14 @@ class TaskRepository implements ITaskRepository
     {
         return $task->delete();
     }
+
+    public function assignToTask(Task $task, int $assigneeId)
+    {
+        try {
+            $task->update(['assignee_id' => $assigneeId]);
+            return true;
+        } catch (\Exception $exception) {
+            return false;
+        }
+    }
 }

@@ -38,6 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('clients', ClientController::class);
     Route::apiResource('projects', ProjectController::class);
+    Route::put('tasks/{task}/assign', [TaskController::class, 'assignToTask']);
     Route::apiResource('tasks', TaskController::class);
 });
 

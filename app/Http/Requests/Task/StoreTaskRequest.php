@@ -25,7 +25,7 @@ class StoreTaskRequest extends FormRequest
         return [
             'title' => 'required|string',
             'deadline' => 'filled',
-            'user_id' => 'required|exists:users,id',
+            'assignee_id' => 'filled|exists:users,id',
             'project_id' => 'required|exists:projects,id',
             'task_status_id' => 'required|exists:task_statuses,id'
         ];
