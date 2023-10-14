@@ -21,4 +21,19 @@ class Task extends Model
         'user_id',
         'task_status_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(TaskStatus::class, 'task_status_id');
+    }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
 }
