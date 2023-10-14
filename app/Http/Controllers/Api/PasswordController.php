@@ -38,24 +38,6 @@ class PasswordController extends Controller
         return response([
             'message' => 'Password could not be updated'
         ], 409);
-
-//            } else {
-//        if ($this->userRepository->updatePassword($updatePasswordRequest)) {
-//            $user = auth()->user();
-//            if (strcmp($updatePasswordRequest->old_password, $updatePasswordRequest->new_password) == 0) {
-//                throw new NewPasswordCannotBeSameAsOld("New password cannot be same as the old one.");
-//            }
-//            if (Hash::check($updatePasswordRequest->old_password, $user->password)) {
-//                $user->update([
-//                    'password' => bcrypt($updatePasswordRequest->new_password)
-//                ]);
-//                return true;
-//            } else {
-//                return false;
-//            }
-//            return $this->respondWithCustomData(['message' => 'Password updated successfully!']);
-//        }
-//        return $this->respondWithCustomData(['message' => 'Password could not be updated.']);
     }
 
     public function sendPasswordResetLink(ForgotPasswordRequest $forgotPasswordRequest)

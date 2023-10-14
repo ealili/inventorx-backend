@@ -15,11 +15,13 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             ProjectStatusSeeder::class,
+            TaskStatusSeeder::class,
         ]);
 
         \App\Models\User::factory(40)->create();
         \App\Models\Client::factory(20)->create();
         \App\Models\Project::factory(20)->create();
+        \App\Models\Task::factory(20)->create();
 
         \App\Models\User::factory()->create([
             'name' => 'Admin User',
