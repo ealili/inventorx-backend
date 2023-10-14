@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AvatarController;
 use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\PasswordController;
 use App\Http\Controllers\Api\ProjectController;
+use App\Http\Controllers\Api\ProjectStatusController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('roles', [RoleController::class, 'index']);
     Route::get('roles/{role}', [RoleController::class, 'show']);
+
+    Route::get('/statuses', [ProjectStatusController::class, 'index']);
 
     Route::apiResource('clients', ClientController::class);
     Route::apiResource('projects', ProjectController::class);

@@ -16,7 +16,6 @@ class AvatarController extends Controller
 
         $file = Storage::putFile('avatars', $request->avatar);
 
-
         Auth()->user()->update(['avatar' => env('APP_URL') . '/storage/' . $file]);
 
         return $file;
