@@ -13,9 +13,9 @@ class TaskRepository implements ITaskRepository
         return TaskResource::collection(Task::all());
     }
 
-    public function get(Task $project)
+    public function get(Task $task)
     {
-        // TODO: Implement get() method.
+        return new TaskResource($task);
     }
 
     public function create(array $data)
@@ -25,13 +25,15 @@ class TaskRepository implements ITaskRepository
         return new TaskResource($task);
     }
 
-    public function update(array $data, Task $project)
+    public function update(array $data, Task $task)
     {
-        // TODO: Implement update() method.
+        $task->update($data);
+        return new TaskResource($task);
+
     }
 
-    public function delete(Task $project)
+    public function delete(Task $task)
     {
-        // TODO: Implement delete() method.
+        return $task->delete();
     }
 }

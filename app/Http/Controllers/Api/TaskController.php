@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\StoreTaskRequest;
+use App\Http\Requests\Task\UpdateTaskRequest;
 use App\Models\Task;
 use App\Repositories\Task\ITaskRepository;
 use Illuminate\Http\Request;
@@ -37,23 +38,15 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Task $task)
-    {
-        //
+        return $this->taskRepository->get($task);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
+    public function update(UpdateTaskRequest $request, Task $task)
     {
-        //
+        return $this->taskRepository->update($request->all(), $task);
     }
 
     /**
@@ -61,6 +54,9 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        if ($this->taskRepository->delete($task)) {
+            return response([''], 204);
+        }
+        return response(['message' => 'Task could be deleted']);
     }
 }
