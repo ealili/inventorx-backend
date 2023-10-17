@@ -13,7 +13,7 @@ class ClientRepository implements IClientRepository
     public function getAll()
     {
         return ClientResource::collection(
-            Client::all()
+            Client::all()->sortByDesc('created_at')
         );
     }
 
