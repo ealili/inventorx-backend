@@ -19,6 +19,7 @@ class ProjectFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'description' => $this->faker->text(),
+            'deadline' => $this->faker->dateTime(),
             'client_id' => rand(1, 10),
             'project_status_id' => rand(1, 3)
         ];

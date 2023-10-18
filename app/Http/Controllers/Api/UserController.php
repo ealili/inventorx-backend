@@ -37,7 +37,6 @@ class UserController extends Controller
         $data['role_id'] = '3';
 
 
-        return $data;
         $user = User::create($data);
 
         return response(new UserResource($user), 201);
