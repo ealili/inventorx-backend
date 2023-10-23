@@ -18,6 +18,7 @@ class Project extends Model
         'name',
         'description',
         'client_id',
+        'deadline',
         'project_status_id'
     ];
 

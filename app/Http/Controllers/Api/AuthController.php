@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\Signuprequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +28,8 @@ class AuthController extends Controller
             'role_id' => 3
         ]);
 
+        $user = new UserResource($user);
+
         $token = $user->createToken('main')->plainTextToken;
         return response(compact('user', 'token'));
     }
@@ -43,6 +46,8 @@ class AuthController extends Controller
 
         /** @var User $user */
         $user = Auth::user();
+        $user = new UserResource($user);
+
         $token = $user->createToken('main')->plainTextToken;
         return response(compact('user', 'token'));
     }
