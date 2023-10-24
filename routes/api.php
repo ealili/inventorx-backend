@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\InsightsController;
+use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +47,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('projects', ProjectController::class);
     Route::put('tasks/{task}/assign', [TaskController::class, 'assignToTask']);
     Route::apiResource('tasks', TaskController::class);
+    Route::apiResource('teams', TeamController::class);
+
 });
 
 
