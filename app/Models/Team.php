@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class Team extends Model
 {
     use HasFactory;
 
@@ -16,19 +16,11 @@ class Project extends Model
      */
     protected $fillable = [
         'name',
-        'description',
-        'client_id',
-        'deadline',
-        'project_status_id'
+        'owner_id'
     ];
 
-    public function client()
+    public function users()
     {
-        return $this->belongsTo(Client::class);
-    }
-
-    public function status()
-    {
-        return $this->belongsTo(ProjectStatus::class, 'project_status_id');
+        return $this->belongsToMany(User::class, 'user_team', 'team_id', 'user_id')->withTimestamps();
     }
 }
