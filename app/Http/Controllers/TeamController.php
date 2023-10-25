@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Team;
+use App\Repositories\Team\ITeamRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class TeamController extends Controller
 {
+
+    public function __construct(
+        private ITeamRepository $teamRepository
+    )
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -21,9 +28,7 @@ class TeamController extends Controller
      */
     public function store(Request $request)
     {
-        $request['owner_id'] = Auth::id();
-        $team = Team::create($request->all());
-        return $team->with('users');
+        return $this->teamRepository->create($request->all());
     }
 
     /**
@@ -31,7 +36,7 @@ class TeamController extends Controller
      */
     public function show(Team $team)
     {
-        //
+        return $this->teamRepository->get($team);
     }
 
     /**
@@ -39,7 +44,7 @@ class TeamController extends Controller
      */
     public function update(Request $request, Team $team)
     {
-        //
+        return $this->teamRepository->update($request->all(), $team);
     }
 
     /**
@@ -47,6 +52,9 @@ class TeamController extends Controller
      */
     public function destroy(Team $team)
     {
-        //
+        if ($this->teamRepository->delete($team)) {
+            return response([''], 204);
+        }
+        return response(['message' => 'Team could be deleted']);
     }
 }

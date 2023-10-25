@@ -2,27 +2,34 @@
 
 namespace App\Repositories\Team;
 
+use App\Http\Resources\Team\TeamResource;
 use App\Models\Team;
+use Illuminate\Support\Facades\Auth;
 
 class TeamRepository implements ITeamRepository
 {
     public function create(array $data)
     {
-        // TODO: Implement create() method.
+        $data['owner_id'] = Auth::id();
+        $team = Team::create($data);
+
+        return new TeamResource($team);
     }
 
     public function get(Team $team)
     {
-        // TODO: Implement get() method.
+        return new TeamResource($team);
     }
 
     public function update(array $data, Team $team)
     {
-        // TODO: Implement update() method.
+        $team->update($data);
+
+        return new TeamResource($team);
     }
 
     public function delete(Team $team)
     {
-        // TODO: Implement delete() method.
+        return $team->delete();
     }
 }
