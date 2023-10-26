@@ -23,7 +23,8 @@ class User extends Authenticatable
         'email',
         'password',
         'avatar',
-        'role_id'
+        'role_id',
+        'team_id'
     ];
 
     /**
@@ -58,8 +59,8 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function teams()
+    public function team()
     {
-        return $this->belongsToMany(Team::class, 'user_team', 'user_id', 'team_id');
+        return $this->belongsTo(Team::class);
     }
 }

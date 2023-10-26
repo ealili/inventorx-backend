@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\Signuprequest;
 use App\Http\Resources\UserResource;
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,10 +15,12 @@ class AuthController extends Controller
 {
     public function signup(Signuprequest $request)
     {
+        // TODO: Move business logic to repository
         $data = $request->validated();
 
-        $avatarPath = env('APP_URL') . '/storage/avatars/' . 'default-profile-picture.jpeg';
+        $team = Team::create(['name' => $request->team_name]);
 
+        $avatarPath = env('APP_URL') . '/storage/avatars/' . 'default-profile-picture.jpeg';
 
         /** @var User $user */
         $user = User::create([
@@ -25,7 +28,8 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'avatar' => $avatarPath,
-            'role_id' => 3
+            'role_id' => 1,
+            'team_id' => $team->id
         ]);
 
         $user = new UserResource($user);
