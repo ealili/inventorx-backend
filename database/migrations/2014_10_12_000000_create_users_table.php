@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('password');
             $table->string('avatar')->nullable();
             $table->foreignId('role_id')->constrained()->onDelete('cascade');
+            $table->foreignId('team_id')->constrained()->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });

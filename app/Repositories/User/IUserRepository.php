@@ -14,4 +14,6 @@ interface IUserRepository
     public function create();
 
     public function update();
+
+    public function invite(array $data);
 }

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Team;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,6 +19,7 @@ class DatabaseSeeder extends Seeder
             TaskStatusSeeder::class,
         ]);
 
+        \App\Models\Team::factory(10)->create();
         \App\Models\User::factory(40)->create();
         \App\Models\Client::factory(20)->create();
         \App\Models\Project::factory(20)->create();
@@ -28,7 +30,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@mail.com',
             'password' => bcrypt('password'),
             'avatar' => env('APP_URL') . '/storage/avatars/' . 'default-profile-picture.jpeg',
-            'role_id' => 1
+            'role_id' => 1,
+            'team_id' => 1
         ]);
     }
 }
