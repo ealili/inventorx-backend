@@ -19,7 +19,8 @@ class Project extends Model
         'description',
         'client_id',
         'deadline',
-        'project_status_id'
+        'project_status_id',
+        'team_id'
     ];
 
     public function client()

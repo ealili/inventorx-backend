@@ -22,6 +22,7 @@ class ProjectResource extends JsonResource
             'status' => $this->status,
             'deadline' => $this->deadline,
             'created_at' => $this->created_at,
+            'team_id' => $this->team_id,
         ];
     }
 }

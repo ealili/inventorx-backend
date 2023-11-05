@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->dateTime('deadline')->nullable();
             $table->foreignId('client_id')->constrained()->onDelete('cascade');
             $table->foreignId('project_status_id')->constrained()->onDelete('cascade');
+            $table->foreignId('team_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

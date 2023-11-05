@@ -4,6 +4,7 @@ namespace App\Repositories\Project;
 
 use App\Http\Resources\Project\ProjectResource;
 use App\Models\Project;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectRepository implements IProjectRepository
 {
@@ -11,7 +12,7 @@ class ProjectRepository implements IProjectRepository
     public function getAll()
     {
         return ProjectResource::collection(
-            Project::all()
+            Project::where('team_id', Auth::user()->team_id)->get()
         );
     }
 
@@ -22,6 +23,7 @@ class ProjectRepository implements IProjectRepository
 
     public function create(array $data)
     {
+        $data['team_id'] = Auth::user()->team_id;
         $project = Project::create($data);
 
         return new ProjectResource($project);

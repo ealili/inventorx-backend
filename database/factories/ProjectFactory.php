@@ -21,7 +21,8 @@ class ProjectFactory extends Factory
             'description' => $this->faker->text(),
             'deadline' => $this->faker->dateTime(),
             'client_id' => rand(1, 10),
-            'project_status_id' => rand(1, 3)
+            'project_status_id' => rand(1, 3),
+            'team_id' => rand(1, 10),
         ];
     }
 }
