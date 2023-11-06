@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\Role;
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -16,7 +17,7 @@ class UserTest extends TestCase
     {
         $user = new User();
 
-        $fillable = ['name', 'email', 'password', 'avatar', 'role_id'];
+        $fillable = ['name', 'email', 'password', 'avatar', 'role_id', 'team_id'];
 
         $this->assertEquals($fillable, $user->getFillable());
     }
@@ -25,9 +26,11 @@ class UserTest extends TestCase
     public function it_hides_sensitive_fields()
     {
         $role = Role::create(['name' => 'admin']);
+        $team = Team::create(['name' => 'MyTeam']);
         $user = User::factory()->create(
             [
                 'role_id' => $role->id, // Replace 1 with the actual role ID you want to assign
+                'team_id' => $team->id
             ]
         );
 
@@ -40,15 +43,14 @@ class UserTest extends TestCase
 
 
     /** @test */
-    public function it_has_role_relationship()
+    public function it_has_role_and_team_relationships()
     {
-        $role = Role::create(['name' => 'admin']);
-        $user = User::factory()->create(
-            [
-                'role_id' => $role->id, // Replace 1 with the actual role ID you want to assign
-            ]
-        );
+        $role = Role::create(['name' => 'Test Role']);
+        $team = Team::create(['name' => 'MyTeam']);
 
-        $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\BelongsTo', $user->role());
+        $user = User::factory()->create(['role_id' => $role->id, 'team_id' => $team->id]);
+
+        $this->assertInstanceOf(Role::class, $user->role);
+        $this->assertInstanceOf(Team::class, $user->team);
     }
 }
