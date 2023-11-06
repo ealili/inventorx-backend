@@ -26,6 +26,10 @@ ENV APP_ENV=production
 ENV APP_DEBUG=true
 ENV ACCESS_TOKEN_EXPIRATION=86400
 
+ENV DB_CONNECTION=sqlite
+ENV DB_DATABASE=:memory:
+
+
 WORKDIR /var/www
 
 # Install system dependencies
