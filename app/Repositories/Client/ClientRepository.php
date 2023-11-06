@@ -6,6 +6,7 @@ use App\Http\Resources\ClientResource;
 use App\Http\Resources\Project\ProjectResource;
 use App\Models\Client;
 use App\Models\Project;
+use Illuminate\Support\Facades\Auth;
 
 class ClientRepository implements IClientRepository
 {
@@ -13,7 +14,7 @@ class ClientRepository implements IClientRepository
     public function getAll()
     {
         return ClientResource::collection(
-            Client::all()->sortByDesc('created_at')
+            Client::where('team_id', Auth::user()->team_id)->get()->sortByDesc('created_at')
         );
     }
 
@@ -24,6 +25,7 @@ class ClientRepository implements IClientRepository
 
     public function create(array $data)
     {
+        $data['team_id'] = Auth::user()->team_id;
         $client = Client::create($data);
 
         return new ClientResource($client);

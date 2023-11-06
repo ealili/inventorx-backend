@@ -9,6 +9,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\UserInvitation;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -23,7 +24,7 @@ class UserRepository implements IUserRepository
     public function paginate()
     {
         return UserResource::collection(
-            User::query()->orderBy('id', 'desc')->paginate()
+            User::query()->where('team_id', Auth::user()->team_id)->orderBy('id', 'desc')->paginate()
         );
     }
 

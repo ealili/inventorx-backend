@@ -20,6 +20,7 @@ class ClientFactory extends Factory
             'company_name' => fake()->name(),
             'address' => fake()->address(),
             'website' => fake()->url(),
+            'team_id' => rand(1, 10),
         ];
     }
 }

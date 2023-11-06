@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             TaskStatusSeeder::class,
         ]);
 
-        \App\Models\Team::factory(10)->create();
+        \App\Models\Team::factory(15)->create();
         \App\Models\User::factory(40)->create();
         \App\Models\Client::factory(20)->create();
         \App\Models\Project::factory(20)->create();

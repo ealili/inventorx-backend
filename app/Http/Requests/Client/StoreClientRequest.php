@@ -24,7 +24,7 @@ class StoreClientRequest extends FormRequest
         return [
             'company_name' => 'required|string',
             'address' => 'required|string',
-            'website' => 'string'
+            'website' => 'string',
         ];
     }
 }
