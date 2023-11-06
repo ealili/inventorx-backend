@@ -1,0 +1,25 @@
+name: Run PHPUnit Tests
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+
+      - name: Install Dependencies
+        run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Run PHPUnit Tests
+        run: php artisan test
