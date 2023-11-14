@@ -3,6 +3,7 @@
 namespace App\Repositories\User;
 
 
+use App\Events\User\UserInvited;
 use App\Exceptions\User\UserAlreadyExistsException;
 use App\Exceptions\User\UserCouldNotBeInvitedException;
 use App\Http\Resources\UserResource;
@@ -52,12 +53,12 @@ class UserRepository implements IUserRepository
 
         DB::beginTransaction();
         try {
-            $invitation['invitation_token'] = Str::uuid();
+            $data['invitation_token'] = Str::uuid();
 
-            $userInvitation = UserInvitation::create($invitation);
+            $userInvitation = UserInvitation::create($data);
 
             // TODO: Create event to email the invitation to the user
-//            event(new UserInvited($userInvitation));
+            event(new UserInvited($userInvitation));
 
             DB::commit();
             return $userInvitation;
@@ -66,5 +67,11 @@ class UserRepository implements IUserRepository
             DB::rollBack();
             throw UserCouldNotBeInvitedException::withEmail($data['email']);
         }
+    }
+
+    public function indexInvitedUsers()
+    {
+        // TODO: Return user invitation collection
+        return UserInvitation::all();
     }
 }

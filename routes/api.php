@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\InsightsController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\UserInvitationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,3 +63,7 @@ Route::middleware('guest')->namespace('Users')->prefix('/password')->group(funct
     Route::post('/forgot', [PasswordController::class, 'sendPasswordResetLink'])->name('password.email');
     Route::post('reset', [PasswordController::class, 'resetPassword'])->name('password.update');
 });
+
+
+Route::get('invitations', [UserInvitationController::class, 'index']);
+Route::post('invitations', [UserInvitationController::class, 'store']);
