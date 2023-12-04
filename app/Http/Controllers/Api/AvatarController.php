@@ -18,6 +18,7 @@ class AvatarController extends Controller
 
         Auth()->user()->update(['avatar' => env('APP_URL') . '/storage/' . $file]);
 
-        return $file;
+        return ['avatar' => env('APP_URL') . '/storage/' . $file];
+
     }
 }

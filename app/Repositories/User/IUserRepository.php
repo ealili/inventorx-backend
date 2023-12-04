@@ -16,4 +16,6 @@ interface IUserRepository
     public function update();
 
     public function invite(array $data);
+
+    public function indexInvitedUsers();
 }

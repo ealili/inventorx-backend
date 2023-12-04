@@ -17,5 +17,6 @@ class UserInvitation extends Model
     protected $fillable = [
         'email',
         'invitation_token',
+        'team_id'
     ];
 }
