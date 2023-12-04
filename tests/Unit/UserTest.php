@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -29,8 +30,9 @@ class UserTest extends TestCase
         $team = Team::create(['name' => 'MyTeam']);
         $user = User::factory()->create(
             [
-                'role_id' => $role->id, // Replace 1 with the actual role ID you want to assign
-                'team_id' => $team->id
+                'role_id' => $role->id,
+                'team_id' => $team->id,
+                'password' => Hash::make('password')
             ]
         );
 
@@ -48,7 +50,8 @@ class UserTest extends TestCase
         $role = Role::create(['name' => 'Test Role']);
         $team = Team::create(['name' => 'MyTeam']);
 
-        $user = User::factory()->create(['role_id' => $role->id, 'team_id' => $team->id]);
+        $user = User::factory()->create(['role_id' => $role->id, 'team_id' => $team->id,
+            'password' => Hash::make('password')]);
 
         $this->assertInstanceOf(Role::class, $user->role);
         $this->assertInstanceOf(Team::class, $user->team);
