@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\Invitations\UserInvitationRequest;
+use App\Models\UserInvitation;
 use App\Repositories\User\IUserRepository;
+use App\Traits\ResponseApi;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserInvitationController extends Controller
 {
+    use ResponseApi;
+
     private readonly IUserRepository $userRepository;
 
     public function __construct(IUserRepository $userRepository)
@@ -36,5 +40,15 @@ class UserInvitationController extends Controller
     public function store(UserInvitationRequest $request)
     {
         return $this->userRepository->invite($request->all());
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Request $request, string $invitationToken)
+    {
+        $userInvitation = UserInvitation::where('invitation_token', $invitationToken)->first();
+        $userInvitation->delete();
+        return $this->respondWithNoContent();
     }
 }

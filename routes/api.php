@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\InsightsController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserInvitationController;
+use App\Http\Controllers\WorkingHoursController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,10 +51,24 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('tasks', TaskController::class);
     Route::apiResource('teams', TeamController::class);
 
+
+    Route::prefix('invitations')->group(function () {
+        Route::get('/', [UserInvitationController::class, 'index']);
+        Route::post('/', [UserInvitationController::class, 'store']);
+        Route::delete('/{invitationToken}', [UserInvitationController::class, 'destroy']);
+    });
+
+
+    // Working hours
+    // TODO: Update controllers and their actions
+    Route::get('working-hours', [UserController::class, 'getUsersWithWorkingHours']);
+    Route::post('working-hours', [WorkingHoursController::class, 'store']);
+    Route::get('working-hours/users/{id}', [WorkingHoursController::class, 'showEmployeeWorkingHour']);
+    Route::get('working-hours/pdf', [WorkingHoursController::class, 'generatePDF']);
 });
 
 
-Route::post('/signup', [AuthController::class, 'signup']);
+Route::post('/register', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login',]);
 
 /*
@@ -64,6 +79,6 @@ Route::middleware('guest')->namespace('Users')->prefix('/password')->group(funct
     Route::post('reset', [PasswordController::class, 'resetPassword'])->name('password.update');
 });
 
-
-Route::get('invitations', [UserInvitationController::class, 'index']);
-Route::post('invitations', [UserInvitationController::class, 'store']);
+//
+//Route::get('invitations', [UserInvitationController::class, 'index']);
+//Route::post('invitations', [UserInvitationController::class, 'store']);

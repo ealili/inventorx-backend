@@ -8,11 +8,14 @@ use App\Http\Requests\Auth\Signuprequest;
 use App\Http\Resources\UserResource;
 use App\Models\Team;
 use App\Models\User;
+use App\Traits\ResponseApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    use ResponseApi;
+
     public function signup(Signuprequest $request)
     {
         // TODO: Move business logic to repository
@@ -34,8 +37,12 @@ class AuthController extends Controller
 
         $user = new UserResource($user);
 
-        $token = $user->createToken('main')->plainTextToken;
-        return response(compact('user', 'token'));
+        $access_token = $user->createToken('main')->plainTextToken;
+
+        return $this->respondWithCustomData([
+            'user' => $user,
+            'access_token' => $access_token
+        ]);
     }
 
     public function login(LoginRequest $request)
@@ -52,8 +59,12 @@ class AuthController extends Controller
         $user = Auth::user();
         $user = new UserResource($user);
 
-        $token = $user->createToken('main')->plainTextToken;
-        return response(compact('user', 'token'));
+        $access_token = $user->createToken('main')->plainTextToken;
+
+        return $this->respondWithCustomData([
+            'user' => $user,
+            'access_token' => $access_token
+        ]);
     }
 
 
