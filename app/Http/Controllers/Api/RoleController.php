@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Repositories\Role\IRoleRepository;
+use App\Traits\ResponseApi;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
+    use ResponseApi;
 
     public function __construct(
         private IRoleRepository $roleRepository
@@ -21,9 +23,11 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return $this->roleRepository->getAll();
-    }
+        // TODO: Update to repo
+        $roles = Role::all();
 
+        return $this->respondWithCustomData($roles);
+    }
     /**
      * Store a newly created resource in storage.
      */

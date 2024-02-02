@@ -21,7 +21,8 @@ class UserResource extends JsonResource
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'avatar' => $this->avatar,
             'role' => $this->role,
-            'team' => $this->team
+            'team' => $this->team,
+            'working_hours' => $this->working_hours
         ];
     }
 }

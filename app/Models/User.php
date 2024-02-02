@@ -63,4 +63,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Team::class);
     }
+
+    public function workingHours()
+    {
+        return $this->hasMany(WorkingHour::class);
+    }
 }
