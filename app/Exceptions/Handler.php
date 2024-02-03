@@ -2,11 +2,14 @@
 
 namespace App\Exceptions;
 
+use App\Traits\ResponseApi;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use ResponseApi;
+
     /**
      * The list of the inputs that are never flashed to the session on validation exceptions.
      *
@@ -44,7 +47,7 @@ class Handler extends ExceptionHandler
 
         if ($exception instanceof \Illuminate\Auth\AuthenticationException) {
             $exception = $this->unauthenticated($request, $exception);
-        }
+        }   
 
         if ($exception instanceof \Illuminate\Validation\ValidationException) {
             $exception = $this->convertValidationExceptionToResponse($exception, $request);

@@ -30,8 +30,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/insights', InsightsController::class);
 
-
     Route::post('/logout', [AuthController::class, 'logout']);
+
     Route::put('password', [PasswordController::class, 'updatePassword']);
 
     Route::get('/user', [UserController::class, 'show']);
@@ -54,6 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('invitations')->group(function () {
         Route::get('/', [UserInvitationController::class, 'index']);
+        Route::get('/{invitation_token}', [UserInvitationController::class, 'show']);
         Route::post('/', [UserInvitationController::class, 'store']);
         Route::delete('/{invitationToken}', [UserInvitationController::class, 'destroy']);
     });
