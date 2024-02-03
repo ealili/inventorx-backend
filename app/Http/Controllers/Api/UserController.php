@@ -3,16 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\Invitations\StoreUserByInvitationRequest;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Repositories\User\IUserRepository;
+use App\Traits\ResponseApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    use ResponseApi;
+
     public function __construct(
         private IUserRepository $userRepository)
     {
@@ -31,16 +35,25 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $data = $request->validated();
-        $data['password'] = bcrypt($data['password']);
-        $avatarPath = env('APP_URL') . '/storage/avatars/' . 'default-profile-picture.jpeg';
-        $data['avatar'] = $avatarPath;
-        $data['role_id'] = '3';
+        // Move to repository
+//        $invitation = $request->invitation_token;
+//        $data = $request->validated();
+//        $data['password'] = bcrypt($data['password']);
+//        $avatarPath = env('APP_URL') . '/storage/avatars/' . 'default-profile-picture.jpeg';
+//        $data['avatar'] = $avatarPath;
+//        $data['role_id'] = '3';
+//
+//
+//        $user = User::create($data);
+//
+//        return response(new UserResource($user), 201);
+    }
 
+    public function storeByInvitation(StoreUserByInvitationRequest $request)
+    {
+        $user = $this->userRepository->createByInvitation($request->all());
 
-        $user = User::create($data);
-
-        return response(new UserResource($user), 201);
+        return $this->respondWithItem(UserResource::class, $user);
     }
 
     /**
@@ -92,7 +105,6 @@ class UserController extends Controller
 //            $query->where('team_id', $teamId)
 //                ->whereRaw("strftime('%Y-%m', date) = ?", [$month]);
 //        }])->get();
-
 
         $users = $users->map(function ($user) {
             $totalWorkingHours = $user->workingHours->sum('working_hours');

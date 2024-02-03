@@ -4,6 +4,8 @@ namespace App\Repositories\User;
 
 
 use App\Events\User\UserInvited;
+use App\Exceptions\Invitations\UserCouldNotBeCreatedException;
+use App\Exceptions\Invitations\UserInvitationNotFoundException;
 use App\Exceptions\User\UserAlreadyExistsException;
 use App\Exceptions\User\UserCouldNotBeInvitedException;
 use App\Http\Resources\UserResource;
@@ -73,5 +75,54 @@ class UserRepository implements IUserRepository
     {
         // TODO: Return user invitation collection
         return UserInvitation::all();
+    }
+
+    /**
+     * @throws UserCouldNotBeCreatedException
+     */
+    public function createByInvitation(array $data)
+    {
+        $invitation = UserInvitation::where('invitation_token', $data['invitation_token'])->first();
+
+        DB::beginTransaction();
+
+        try {
+            $user = User::create([
+                'name' => $data['name'],
+                'password' => bcrypt($data['password']),
+                'email' => $invitation->email,
+                'role_id' => $invitation->role_id,
+                'team_id' => $invitation->team_id
+            ]);
+
+            // Delete invitation after successful user creation
+            $invitation->delete();
+
+            DB::commit();
+            return $user;
+        } catch (\Exception $exception) {
+            Log::info($exception->getMessage());
+            DB::rollBack();
+            throw UserCouldNotBeCreatedException::withEmail($invitation['email']);
+        }
+    }
+
+    public function getAllTeamUserInvitations()
+    {
+        return UserInvitation::where('team_id', Auth::user()->team_id)->get();
+    }
+
+    /**
+     * @throws UserInvitationNotFoundException
+     */
+    public function getInvitationByToken(string $invitationToken)
+    {
+        $userInvitation = UserInvitation::where('invitation_token', $invitationToken)->first();
+
+        if (!$userInvitation) {
+            throw UserInvitationNotFoundException::withToken($invitationToken);
+        }
+
+        return $userInvitation;
     }
 }

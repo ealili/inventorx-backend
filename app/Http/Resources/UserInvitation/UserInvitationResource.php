@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\UserInvitation;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -18,6 +18,8 @@ class UserInvitationResource extends JsonResource
             'id' => $this->id,
             'email' => $this->email,
             'invitation_token' => $this->invitation_token,
+            'team' => $this->team,
+            'role' => $this->role
         ];
     }
 }
