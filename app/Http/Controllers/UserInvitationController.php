@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\Invitations\UserInvitationRequest;
+use App\Http\Resources\UserInvitationResource;
 use App\Models\UserInvitation;
 use App\Repositories\User\IUserRepository;
 use App\Traits\ResponseApi;
@@ -29,6 +30,13 @@ class UserInvitationController extends Controller
     public function index(Request $request)
     {
         return $this->userRepository->indexInvitedUsers();
+    }
+
+    public function show(Request $request, string $invitationToken)
+    {
+        $invitationToken = UserInvitation::where('invitation_token', $invitationToken)->first();
+
+        return $this->respondWithItem(UserInvitationResource::class, $invitationToken);
     }
 
     /**

@@ -22,7 +22,7 @@ class UserInvitationRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|unique:user_invitations',
+            'email' => 'required|unique:user_invitations,email',
             'team_id' => 'required|exists:teams,id',
         ];
     }
