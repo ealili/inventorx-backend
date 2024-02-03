@@ -54,7 +54,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('invitations')->group(function () {
         Route::get('/', [UserInvitationController::class, 'index']);
-        Route::get('/{invitation_token}', [UserInvitationController::class, 'show']);
         Route::post('/', [UserInvitationController::class, 'store']);
         Route::delete('/{invitationToken}', [UserInvitationController::class, 'destroy']);
     });
@@ -80,6 +79,4 @@ Route::middleware('guest')->namespace('Users')->prefix('/password')->group(funct
     Route::post('reset', [PasswordController::class, 'resetPassword'])->name('password.update');
 });
 
-//
-//Route::get('invitations', [UserInvitationController::class, 'index']);
-//Route::post('invitations', [UserInvitationController::class, 'store']);
+Route::get('invitations/{invitation_token}', [UserInvitationController::class, 'show']);
