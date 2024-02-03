@@ -13,9 +13,15 @@ interface IUserRepository
 
     public function create();
 
+    public function createByInvitation(array $data);
+
     public function update();
 
     public function invite(array $data);
 
     public function indexInvitedUsers();
+
+    public function getAllTeamUserInvitations();
+
+    public function getInvitationByToken(string $invitationToken);
 }

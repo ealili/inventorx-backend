@@ -17,6 +17,17 @@ class UserInvitation extends Model
     protected $fillable = [
         'email',
         'invitation_token',
-        'team_id'
+        'team_id',
+        'role_id'
     ];
+
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }

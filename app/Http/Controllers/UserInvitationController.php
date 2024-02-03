@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\User\Invitations\UserInvitationRequest;
-use App\Http\Resources\UserInvitationResource;
+use App\Http\Requests\User\Invitations\StoreUserInvitationRequest;
+use App\Http\Resources\UserInvitation\UserInvitationCollection;
+use App\Http\Resources\UserInvitation\UserInvitationResource;
 use App\Models\UserInvitation;
 use App\Repositories\User\IUserRepository;
 use App\Traits\ResponseApi;
@@ -29,23 +30,24 @@ class UserInvitationController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->userRepository->indexInvitedUsers();
+        return $this->respondWithCollection(UserInvitationCollection::class,
+            $this->userRepository->getAllTeamUserInvitations());
     }
 
     public function show(Request $request, string $invitationToken)
     {
-        $invitationToken = UserInvitation::where('invitation_token', $invitationToken)->first();
+        $userInvitation = $this->userRepository->getInvitationByToken($invitationToken);
 
-        return $this->respondWithItem(UserInvitationResource::class, $invitationToken);
+        return $this->respondWithItem(UserInvitationResource::class, $userInvitation);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param UserInvitationRequest $request
+     * @param StoreUserInvitationRequest $request
      * @return JsonResponse
      */
-    public function store(UserInvitationRequest $request)
+    public function store(StoreUserInvitationRequest $request)
     {
         return $this->userRepository->invite($request->all());
     }

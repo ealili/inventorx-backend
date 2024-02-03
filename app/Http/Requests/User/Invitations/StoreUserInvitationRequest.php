@@ -4,7 +4,7 @@ namespace App\Http\Requests\User\Invitations;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserInvitationRequest extends FormRequest
+class StoreUserInvitationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,6 +23,7 @@ class UserInvitationRequest extends FormRequest
     {
         return [
             'email' => 'required|unique:user_invitations,email',
+            'role_id' => 'required|int|exists:roles,id',
             'team_id' => 'required|exists:teams,id',
         ];
     }

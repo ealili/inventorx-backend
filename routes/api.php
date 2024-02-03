@@ -36,7 +36,16 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/user', [UserController::class, 'show']);
 
-    Route::apiResource('users', UserController::class);
+//    Route::apiResource('users', UserController::class);
+    Route::prefix('users')->controller(UserController::class)->group(function() {
+        Route::get('/', 'index');
+        Route::get('/{id}', 'show');
+        Route::put('/{user}', 'update');
+        Route::delete('/{id}', 'destroy');
+    });
+
+//    Route::post('backoffice/users', [UserController::class, 'store'])
+
     Route::post('avatar', [AvatarController::class, 'store']);
 
     Route::get('roles', [RoleController::class, 'index']);
@@ -51,13 +60,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('tasks', TaskController::class);
     Route::apiResource('teams', TeamController::class);
 
-
     Route::prefix('invitations')->group(function () {
         Route::get('/', [UserInvitationController::class, 'index']);
         Route::post('/', [UserInvitationController::class, 'store']);
         Route::delete('/{invitationToken}', [UserInvitationController::class, 'destroy']);
     });
-
 
     // Working hours
     // TODO: Update controllers and their actions
@@ -66,7 +73,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('working-hours/users/{id}', [WorkingHoursController::class, 'showEmployeeWorkingHour']);
     Route::get('working-hours/pdf', [WorkingHoursController::class, 'generatePDF']);
 });
-
 
 Route::post('/register', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login',]);
@@ -80,3 +86,4 @@ Route::middleware('guest')->namespace('Users')->prefix('/password')->group(funct
 });
 
 Route::get('invitations/{invitation_token}', [UserInvitationController::class, 'show']);
+Route::post('users', [UserController::class, 'storeByInvitation']);
