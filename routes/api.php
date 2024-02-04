@@ -41,7 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', 'index');
         Route::get('/{id}', 'show');
         Route::put('/{user}', 'update');
-        Route::delete('/{id}', 'destroy');
+        Route::delete('/{user}', 'destroy');
     });
 
 //    Route::post('backoffice/users', [UserController::class, 'store'])

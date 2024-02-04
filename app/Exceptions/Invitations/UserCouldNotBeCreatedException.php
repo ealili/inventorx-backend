@@ -7,8 +7,8 @@ use JetBrains\PhpStorm\Pure;
 
 class UserCouldNotBeCreatedException extends DataCouldNotBeCreatedException
 {
-    #[Pure] public static function withEmail(string $email): static
+    #[Pure] public static function withEmail(int $id): static
     {
-        return new static("User with email `{$email}` could not be created.");
+        return new static("User with id `{id}` could not be created.");
     }
 }
