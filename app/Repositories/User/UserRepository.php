@@ -19,9 +19,15 @@ use Illuminate\Support\Str;
 
 class UserRepository implements IUserRepository
 {
-    public function get(User $user)
+    public function getUserById(int $id)
     {
-        return new UserResource($user);
+        $user = User::find($id);
+
+        if (!$user) {
+            throw UserCouldNotBeCreatedException::withId($id);
+        }
+
+        return $user;
     }
 
     public function paginate()

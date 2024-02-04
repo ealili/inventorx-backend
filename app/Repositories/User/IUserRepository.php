@@ -9,7 +9,7 @@ interface IUserRepository
 {
     public function paginate();
 
-    public function get(User $user);
+    public function getUserById(int $id);
 
     public function create();
 

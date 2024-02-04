@@ -59,9 +59,10 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show(Request $request, int $id)
     {
-        return $this->userRepository->get($request->user());
+        $user =  $this->userRepository->getUserById($id);
+        return $this->respondWithItem(UserResource::class, $user);
 //        return new UserResource($user);
     }
 
@@ -91,11 +92,11 @@ class UserController extends Controller
 
     public function getUsersWithWorkingHours(Request $request) {
         // TODO: Move to repo
-        $teamId = Auth::user()->team->id;
+        $teamId = Auth::user()->team_id;
 
         $month = $request->input('month', now()->format('Y-m'));
 
-        $users = User::with(['workingHours' => function ($query) use ($teamId, $month) {
+        $users = User::where('team_id', $teamId)->with(['workingHours' => function ($query) use ($teamId, $month) {
             $query->where('team_id', $teamId)
                 ->whereRaw("DATE_FORMAT(date, '%Y-%m') = ?", [$month]);
         }])->get();
