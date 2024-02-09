@@ -20,19 +20,32 @@ class WorkingHoursController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, int $userId)
     {
+        $date = $request->input('date');
 
+        // Extract year and month from the request date
+        $year = date('Y', strtotime($date));
+        $month = date('m', strtotime($date));
+
+        $workingHours = WorkingHour::where('user_id', $userId)
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->orderBy('date')
+            ->get();
+
+        return $this->respondWithCollection(WorkingHourCollection::class, $workingHours);
     }
+
 
     /**
      * Display the specified resource.
      */
     public function showEmployeeWorkingHour(Request $request, int $userId)
     {
-        $workingHour = WorkingHour::where('user_id', $userId)->where('date', $request->date)->first();
+        $workingHour = WorkingHour::where('user_id', $userId)->where('date', $request->date)->firstOrFail();
 
-        return $this->respondWithItem(WorkingHourResource::class, $workingHour);
+        return $this->respondWithItem(WorkingHourResource::class, $workingHour->first());
     }
 
     /**
