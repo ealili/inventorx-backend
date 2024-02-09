@@ -71,6 +71,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('working-hours', [UserController::class, 'getUsersWithWorkingHours']);
     Route::post('working-hours', [WorkingHoursController::class, 'store']);
     Route::get('working-hours/users/{id}', [WorkingHoursController::class, 'showEmployeeWorkingHour']);
+    Route::get('working-hours/user/{id}', [WorkingHoursController::class, 'index']);
     Route::get('working-hours/pdf', [WorkingHoursController::class, 'generatePDF']);
 });
 

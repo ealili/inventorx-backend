@@ -33,5 +33,14 @@ class DatabaseSeeder extends Seeder
             'role_id' => 1,
             'team_id' => 1
         ]);
+
+        \App\Models\User::factory()->create([
+            'name' => 'User',
+            'email' => 'user@mail.com',
+            'password' => bcrypt('password'),
+            'avatar' => env('APP_URL') . '/storage/avatars/' . 'default-profile-picture.jpeg',
+            'role_id' => 2,
+            'team_id' => 1
+        ]);
     }
 }
