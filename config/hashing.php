@@ -32,6 +32,10 @@ return [
         'rounds' => env('BCRYPT_ROUNDS', 10),
     ],
 
+
+    // Disable for testing purposes (application disruption test)
+    'rehash_on_login' => false,
+
     /*
     |--------------------------------------------------------------------------
     | Argon Options
