@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
+    public const ADMIN_ROLE_ID = 1;
+    public const USER_ROLE_ID = 2;
+
     use HasFactory;
 
     /**

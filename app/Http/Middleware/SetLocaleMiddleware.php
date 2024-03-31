@@ -16,8 +16,7 @@ class SetLocaleMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-
-        $locale = $request->header('Accept-Language', 'de'); // Default to English if header not present
+        $locale = $request->header('Accept-Language', 'en');
 
         App::setLocale($locale);
 

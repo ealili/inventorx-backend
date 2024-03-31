@@ -75,7 +75,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('working-hours/pdf', [WorkingHoursController::class, 'generatePDF']);
 });
 
-Route::post('/register', [AuthController::class, 'signup']);
+Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login',]);
 
 /*

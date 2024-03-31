@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Role\RoleCollection;
+use App\Http\Resources\Role\RoleResource;
 use App\Models\Role;
 use App\Repositories\Role\IRoleRepository;
 use App\Traits\ResponseApi;
@@ -23,11 +25,12 @@ class RoleController extends Controller
      */
     public function index()
     {
-        // TODO: Update to repo
-        $roles = Role::all();
-
-        return $this->respondWithCustomData($roles);
+        return $this->respondWithCollection(
+            RoleCollection::class,
+            $this->roleRepository->getAll()
+        );
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -41,7 +44,10 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        return $this->roleRepository->get($role);
+        return $this->respondWithItem(
+            RoleResource::class,
+            $this->roleRepository-> get($role)
+        );
     }
 
     /**

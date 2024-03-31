@@ -47,8 +47,13 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    // Mutator for password attribute
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
 
-    //Overriden sendEmailVerificationNotification implementation
+    // Overriden sendEmailVerificationNotification implementation
     public function sendPasswordResetNotification($token)
     {
         PasswordResetJob::dispatch($this, $token);
