@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use App\Traits\ResponseApi;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -39,25 +40,34 @@ class Handler extends ExceptionHandler
 
     private function handleApiException($request, Throwable $exception): \Illuminate\Http\JsonResponse
     {
-        $exception = $this->prepareException($exception);
+        try {
+            $exception = $this->prepareException($exception);
 
-        if ($exception instanceof \Illuminate\Http\Exceptions\HttpResponseException) {
-            $exception = $exception->getResponse();
+            if ($exception instanceof \Illuminate\Http\Exceptions\HttpResponseException) {
+                $exception = $exception->getResponse();
+            }
+
+            if ($exception instanceof \Illuminate\Auth\AuthenticationException) {
+                $exception = $this->unauthenticated($request, $exception);
+            }
+
+            if ($exception instanceof \Illuminate\Validation\ValidationException) {
+                $exception = $this->convertValidationExceptionToResponse($exception, $request);
+            }
+
+            return $this->customApiResponse($exception);
+        } catch (\Exception $e) {
+            Log::error('Exception occurred during exception handling: ' . $e->getMessage());
+
+            // Return a generic error response
+            return $this->respondWithCustomData(['message' => 'Internal Server Error'], 500);
         }
-
-        if ($exception instanceof \Illuminate\Auth\AuthenticationException) {
-            $exception = $this->unauthenticated($request, $exception);
-        }   
-
-        if ($exception instanceof \Illuminate\Validation\ValidationException) {
-            $exception = $this->convertValidationExceptionToResponse($exception, $request);
-        }
-
-        return $this->customApiResponse($exception);
     }
+
 
     private function customApiResponse($exception): \Illuminate\Http\JsonResponse
     {
+        Log::info($exception);
         if (method_exists($exception, 'getStatusCode')) {
             $statusCode = $exception->getStatusCode();
         } elseif (method_exists($exception, 'getCode') && $exception->getCode() != 0) {
@@ -70,7 +80,11 @@ class Handler extends ExceptionHandler
 
         switch ($statusCode) {
             case 401:
-                $response['message'] = $exception->original['message'];
+                if (method_exists($exception, 'getMessage')) {
+                    $response['message'] = $exception->getMessage();
+                } else {
+                    $response['message'] = $exception->original['message'];
+                }
                 break;
             case 422:
                 $response['message'] = $exception->original['message'];
@@ -87,14 +101,16 @@ class Handler extends ExceptionHandler
                 break;
         }
 
+        if (method_exists($exception, 'getCode')) {
+            $response['code'] = $exception->getCode();
+        }
+
         if (config('app.debug')) {
             if (method_exists($exception, 'getTrace')) {
                 $response['trace'] = $exception->getTrace();
             }
         }
-        if (method_exists($exception, 'getCode')) {
-            $response['code'] = $exception->getCode();
-        }
+
 
         $response['status'] = $statusCode;
 
