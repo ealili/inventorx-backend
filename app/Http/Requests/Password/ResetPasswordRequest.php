@@ -31,7 +31,7 @@ class ResetPasswordRequest extends FormRequest
             'password' => [
                 'required',
                 'confirmed',
-                Password::min(8)->letters()->symbols()
+                Password::min(8)->letters()->symbols()->numbers()
             ]
         ];
     }
