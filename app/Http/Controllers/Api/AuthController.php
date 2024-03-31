@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\Signuprequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\UserResource;
-use App\Models\Team;
 use App\Models\User;
+use App\Repositories\Auth\IAuthRepository;
 use App\Traits\ResponseApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,40 +16,42 @@ class AuthController extends Controller
 {
     use ResponseApi;
 
-    public function signup(Signuprequest $request)
+    /**
+     * AuthController constructor.
+     *
+     * @param IAuthRepository $authRepository
+     */
+    public function __construct(
+        private readonly IAuthRepository $authRepository
+    )
     {
-        // TODO: Move business logic to repository
-        $data = $request->validated();
-
-        $team = Team::create(['name' => $request->team_name]);
-
-        $avatarPath = env('APP_URL') . '/storage/avatars/' . 'default-profile-picture.jpeg';
-
-        /** @var User $user */
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'avatar' => $avatarPath,
-            'role_id' => 1,
-            'team_id' => $team->id
-        ]);
-
-        $user = new UserResource($user);
-
-        $access_token = $user->createToken('main')->plainTextToken;
-
-        return $this->respondWithCustomData([
-            'user' => $user,
-            'access_token' => $access_token
-        ]);
     }
 
+    /**
+     * Handle user registration.
+     *
+     * @param RegisterRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function register(RegisterRequest $request)
+    {
+        $this->authRepository->register($request->all());
+
+        return $this->respondWithCustomData([
+            'message' => 'Registration successful',
+        ], 201);
+    }
+
+    /**
+     * Handle user login.
+     *
+     * @param LoginRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(LoginRequest $request)
     {
-        $credentials = $request->validated();
-
-        if (!Auth::attempt($credentials)) {
+        if (!Auth::attempt($request->all())) {
+            // TODO: Throw exception
             return response([
                 'message' => 'Provided email address or password is incorrect!',
             ], 400);
@@ -67,13 +69,16 @@ class AuthController extends Controller
         ]);
     }
 
-
+    /**
+     * Handle user logout.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function logout(Request $request)
     {
         /** @var User $user */
         $user = $request->user();
-
-//        $user->currentAccessToken()->delete();
 
         $user->tokens()->delete();
 

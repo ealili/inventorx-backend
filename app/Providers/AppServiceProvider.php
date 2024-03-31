@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\Auth\AuthRepository;
+use App\Repositories\Auth\IAuthRepository;
 use App\Repositories\Client\ClientRepository;
 use App\Repositories\Client\IClientRepository;
 use App\Repositories\Project\IProjectRepository;
@@ -29,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IProjectRepository::class, ProjectRepository::class);
         $this->app->bind(ITaskRepository::class, TaskRepository::class);
         $this->app->bind(ITeamRepository::class, TeamRepository::class);
-
+        $this->app->bind(IAuthRepository::class, AuthRepository::class);
     }
 
     /**
