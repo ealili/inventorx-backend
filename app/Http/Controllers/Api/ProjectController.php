@@ -5,11 +5,16 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
+use App\Http\Resources\Project\ProjectCollection;
+use App\Http\Resources\Project\ProjectResource;
 use App\Models\Project;
 use App\Repositories\Project\IProjectRepository;
+use App\Traits\ResponseApi;
 
 class ProjectController extends Controller
 {
+    use ResponseApi;
+
     public function __construct(
         private IProjectRepository $projectRepository
     )
@@ -21,7 +26,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return $this->projectRepository->getAll();
+        return $this->respondWithCollection(ProjectCollection::class,
+            $this->projectRepository->getAll());
     }
 
     /**
@@ -29,7 +35,9 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        return $this->projectRepository->create($request->all());
+        return $this->respondWithItem(ProjectResource::class,
+            $this->projectRepository->create($request->all()
+            ));
     }
 
     /**
@@ -37,7 +45,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return $this->projectRepository->get($project);
+        return $this->respondWithItem(ProjectResource::class, $project);
     }
 
     /**
@@ -45,7 +53,8 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        return $this->projectRepository->update($request->all(), $project);
+        return $this->respondWithItem(ProjectResource::class,
+            $this->projectRepository->update($request->all(), $project));
     }
 
     /**
@@ -54,8 +63,8 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         if ($this->projectRepository->delete($project)) {
-            return response([''], 204);
+            return $this->respondWithCustomData(['message' => 'Client deleted'], 204);
         }
-        return response(['message' => 'Project could be deleted']);
+        return $this->respondWithCustomData(['message' => 'Project could not be deleted'], 422);
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use App\Repositories\Auth\IAuthRepository;
 use App\Traits\ResponseApi;
@@ -52,8 +52,8 @@ class AuthController extends Controller
     {
         if (!Auth::attempt($request->all())) {
             // TODO: Throw exception
-            return response([
-                'message' => 'Provided email address or password is incorrect!',
+            return $this->respondWithCustomData([
+                'message' => 'Provided email address or password is incorrect!'
             ], 400);
         }
 
@@ -82,6 +82,8 @@ class AuthController extends Controller
 
         $user->tokens()->delete();
 
-        return response([''], 200);
+        return $this->respondWithCustomData([
+            'message' => 'Log out successful'
+        ]);
     }
 }

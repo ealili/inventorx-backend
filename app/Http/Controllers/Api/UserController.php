@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\Invitations\StoreUserByInvitationRequest;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\User\UserCollection;
+use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use App\Repositories\User\IUserRepository;
 use App\Traits\ResponseApi;
@@ -27,7 +28,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return $this->userRepository->paginate();
+        return $this->respondWithCollection(
+            UserCollection::class, $this->userRepository->paginate()
+        );
     }
 
     /**
@@ -63,7 +66,6 @@ class UserController extends Controller
     {
         $user =  $this->userRepository->getUserById($id);
         return $this->respondWithItem(UserResource::class, $user);
-//        return new UserResource($user);
     }
 
     /**
@@ -77,7 +79,7 @@ class UserController extends Controller
         }
         $user->update($data);
 
-        return new UserResource($user);
+        return $this->respondWithItem(UserResource::class, $user);
     }
 
     /**

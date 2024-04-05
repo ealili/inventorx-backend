@@ -6,12 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\AssignEmployeeToTaskRequest;
 use App\Http\Requests\Task\StoreTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
+use App\Http\Resources\Task\TaskCollection;
+use App\Http\Resources\Task\TaskResource;
 use App\Models\Task;
 use App\Repositories\Task\ITaskRepository;
+use App\Traits\ResponseApi;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
+    use ResponseApi;
+
     public function __construct(
         private readonly ITaskRepository $taskRepository
     )
@@ -23,7 +28,8 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return $this->taskRepository->getAll();
+        return $this->respondWithCollection(TaskCollection::class,
+            $this->taskRepository->getAll());
     }
 
     /**
@@ -31,7 +37,9 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        return $this->taskRepository->create($request->all());
+        return $this->respondWithItem(TaskResource::class,
+            $this->taskRepository->create($request->all()
+            ));
     }
 
     /**
@@ -39,7 +47,8 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        return $this->taskRepository->get($task);
+        return $this->respondWithItem(TaskResource::class,
+            $this->taskRepository->get($task));
     }
 
     /**
@@ -47,7 +56,8 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        return $this->taskRepository->update($request->all(), $task);
+        return $this->respondWithItem(TaskResource::class,
+            $this->taskRepository->update($request->all(), $task));
     }
 
     /**
@@ -56,9 +66,9 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         if ($this->taskRepository->delete($task)) {
-            return response([''], 204);
+            return $this->respondWithCustomData(['message' => 'Task deleted.'], 204);
         }
-        return response(['message' => 'Task could be deleted']);
+        return $this->respondWithCustomData(['message' => 'Task could not be deleted.'], 422);
     }
 
     /**
@@ -67,8 +77,8 @@ class TaskController extends Controller
     public function assignToTask(AssignEmployeeToTaskRequest $request, Task $task)
     {
         if ($this->taskRepository->assignToTask($task, $request->assignee_id)) {
-            return response(['message' => 'Employee has been assigned to task.'], 200);
+            return $this->respondWithCustomData(['message' => 'Employee has been assigned to task.']);
         }
-        return response(['Could not assign employee to task']);
+        return $this->respondWithCustomData(['message' => 'Could not assign employee to task.']);
     }
 }
