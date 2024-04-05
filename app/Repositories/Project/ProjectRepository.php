@@ -11,14 +11,12 @@ class ProjectRepository implements IProjectRepository
 
     public function getAll()
     {
-        return ProjectResource::collection(
-            Project::where('team_id', Auth::user()->team_id)->get()
-        );
+        return Project::where('team_id', Auth::user()->team_id)->get();
     }
 
     public function get(Project $project)
     {
-        return new ProjectResource($project);
+        return $project;
     }
 
     public function create(array $data)
@@ -26,14 +24,14 @@ class ProjectRepository implements IProjectRepository
         $data['team_id'] = Auth::user()->team_id;
         $project = Project::create($data);
 
-        return new ProjectResource($project);
+        return $project;
     }
 
     public function update(array $data, Project $project)
     {
         $project->update($data);
 
-        return new ProjectResource($project);
+        return $project;
     }
 
     public function delete(Project $project)

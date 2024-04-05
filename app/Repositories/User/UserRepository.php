@@ -8,7 +8,6 @@ use App\Exceptions\Invitations\UserCouldNotBeCreatedException;
 use App\Exceptions\Invitations\UserInvitationNotFoundException;
 use App\Exceptions\User\UserAlreadyExistsException;
 use App\Exceptions\User\UserCouldNotBeInvitedException;
-use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\UserInvitation;
 use Exception;
@@ -32,9 +31,7 @@ class UserRepository implements IUserRepository
 
     public function paginate()
     {
-        return UserResource::collection(
-            User::query()->where('team_id', Auth::user()->team_id)->orderBy('id', 'desc')->paginate()
-        );
+        return User::where('team_id', Auth::user()->team_id)->orderBy('id', 'desc')->paginate();
     }
 
     public function create()
