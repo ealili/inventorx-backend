@@ -31,7 +31,7 @@ class AuthenticationTest extends TestCase
 
         $user = User::where('email', 'test@test.com')->first();
 
-        $this->assertNotNull($user);~
+        $this->assertNotNull($user);
 
         $this->assertDatabaseHas('users', ['email' => 'test@test.com']);
 
